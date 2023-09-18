@@ -1,7 +1,0 @@
-.vscode/
-node_modules/
-exercise.js
-.jshintrc
-hash.js
-text.txt
-*.log
