@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 
 
 router.post('/', async (req, res) => {
+    /* The code `router.post('/', async (req, res) => { ... })` is defining a route handler for a POST
+    request to the auth URL ("/api/auth"). */
     const {error} = validate(req.body);
     if (error)  return res.status(400).send(error.details[0].message);
 
@@ -22,7 +24,16 @@ router.post('/', async (req, res) => {
     res.send(token)
 });
 
+
 function validate(req) {
+    /**
+     * The function `validate` is used to validate a request object that should contain an email and
+     * password, using the Joi library.
+     * @param req - The `req` parameter is an object that contains the data to be validated. It should have
+     * the following properties:
+     * @returns the result of validating the request object against the defined schema using the Joi
+     * library.
+     */
     const schema = Joi.object({
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(5).max(255).required(),
