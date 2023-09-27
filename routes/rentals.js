@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 const mongoose = require('mongoose');
 const {Rental, validate} = require('../models/rentals');
-const {Movie} = require('../models/movies');
+const {Game} = require('../models/games');
 const {Customer} = require('../models/customers');
 
 router.get('/', async (req, res) => {
@@ -18,11 +18,11 @@ router.post('/', async (req, res) => {
         const customer = await Customer.findById(req.body.customerId);
         if (!customer) return res.status(400).send('Invalid customer.');
 
-        const movie = await Movie.findById(req.body.movieId);
-        if (!movie) return res.status(400).send('Invalid movie.');
+        const game = await Game.findById(req.body.gameId);
+        if (!game) return res.status(400).send('Invalid game.');
 
         // Soft commit: Check stock without changing it yet
-        if (movie.numberInStock === 0) return res.status(400).send('Movie not in stock.');
+        if (game.numberInStock === 0) return res.status(400).send('Game not in stock.');
 
         let rental = new Rental({ 
             customer: {
@@ -30,24 +30,24 @@ router.post('/', async (req, res) => {
                 name: customer.name, 
                 phone: customer.phone
             },
-            movie: {
-                _id: movie._id,
-                title: movie.title,
-                dailyRentalRate: movie.dailyRentalRate
+            game: {
+                _id: game._id,
+                title: game.title,
+                dailyRentalRate: game.dailyRentalRate
             }
         });
 
-        // Confirmation: Save rental and update movie stock
+        // Confirmation: Save rental and update game stock
         await rental.save();
-        const updatedMovie = await Movie.findOneAndUpdate({ _id: movie._id, numberInStock: { $gt: 0 } }, {
+        const updatedGame = await Game.findOneAndUpdate({ _id: game._id, numberInStock: { $gt: 0 } }, {
             $inc: { numberInStock: -1 }
         });
 
         // Confirm the stock was still available during update
-        if (!updatedMovie) {
-            // Roll back: Remove the rental since the movie update failed
+        if (!updatedGame) {
+            // Roll back: Remove the rental since the game update failed
             await Rental.deleteOne({ _id: rental._id });
-            return res.status(400).send('Movie was no longer in stock. Rental rolled back.');
+            return res.status(400).send('Game was no longer in stock. Rental rolled back.');
         }
 
         res.send(rental);

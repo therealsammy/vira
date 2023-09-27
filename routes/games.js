@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router()
 const mongoose = require('mongoose');
-const {Movie, validate} = require('../models/movies')
+const {Game, validate} = require('../models/games')
 const {Genre} = require('../models/genre')
 
 router.get('/', async (req, res) => {
-    const movies = await Movie.find().sort('name');
-    res.send(movies);
+    const games = await Game.find().sort('name');
+    res.send(games);
 });
 
 router.get('/:id', async (req, res) => {
-    const movie = await Movie.findById(req.params.id);
+    const game = await Game.findById(req.params.id);
 
-    if (!movie) return res.status(404).send('The movie with the given ID not found.');
-    res.send(movie);
+    if (!game) return res.status(404).send('The game with the given ID not found.');
+    res.send(game);
 });
 
 router.post('/', async (req, res) => {
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     const genre = await Genre.findById(req.body.genreId);
     if (!genre) return res.status(400).send('Invalid genre.');
 
-    const movie = new Movie({ 
+    const game = new Game({ 
         title: req.body.title,
         genre: {
             _id: genre._id,
@@ -32,9 +32,9 @@ router.post('/', async (req, res) => {
         numberInStock: req.body.numberInStock,
         dailyRentalRate: req.body.dailyRentalRate
     });
-    await movie.save();
+    await game.save();
     
-    res.send(movie);
+    res.send(game);
 });
 
 router.put('/:id', async (req, res) => {
@@ -44,7 +44,7 @@ router.put('/:id', async (req, res) => {
     const genre = await Genre.findById(req.body.genreId);
     if (!genre) return res.status(400).send('Invalid genre.');
 
-    const movie = await Movie.findByIdAndUpdate(req.params.id,
+    const game = await Game.findByIdAndUpdate(req.params.id,
     { 
         title: req.body.title,
         genre: {
@@ -55,17 +55,17 @@ router.put('/:id', async (req, res) => {
         dailyRentalRate: req.body.dailyRentalRate
     }, { new: true });
 
-    if (!movie) return res.status(404).send('The movie with the given ID was not found.');
+    if (!game) return res.status(404).send('The game with the given ID was not found.');
     
-    res.send(movie);
+    res.send(game);
 });
 
 router.delete('/:id', async (req, res) => {
-    const movie = await Movie.findByIdAndRemove(req.params.id);
+    const game = await Game.findByIdAndRemove(req.params.id);
 
-    if (!movie) return res.status(404).send('The movie with the given ID was not found.');
+    if (!game) return res.status(404).send('The game with the given ID was not found.');
 
-    res.send(movie);
+    res.send(game);
 });
 
 
