@@ -242,4 +242,6 @@ Each model employs the Joi validation library to ensure data integrity. Specific
 
 -   `userSchema.methods.generateAuthToken`: Generates an authentication token for the user.
 
+---.
+
 **Thank you for considering Vira! We are excited to see the amazing projects you will build with it.**
