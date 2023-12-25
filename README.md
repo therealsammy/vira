@@ -604,7 +604,7 @@ const admin = require('../middleware/admin');
 router.delete('/:id', [auth, admin], async (req, res) => {
     // ...
 });
-
+````
 # Asynchronous Middleware Wrapper
 
 This JavaScript function serves as a wrapper to handle asynchronous middleware functions.
@@ -626,7 +626,8 @@ const asyncMiddleware = require('../middleware/asyncMiddleware');
 
 router.get('/', asyncMiddleware(async (req, res) => {
     // ...
-}));```
+}));
+```
 # Authentication Middleware (JWT)
 
 This JavaScript function serves as middleware to authenticate users using JSON Web Tokens (JWT).
@@ -648,7 +649,8 @@ const auth = require('../middleware/auth');
 
 router.get('/protected', auth, (req, res) => {
     // ...
-});```
+});
+```
 
 ### Error Handling Middleware
 
@@ -673,8 +675,8 @@ This function is used as middleware in the video game rental application to hand
 ```javascript
 const errorMiddleware = require('../middleware/error');
 
-app.use(errorMiddleware);```
-
+app.use(errorMiddleware);
+```
 
 ## MongoDB ObjectID Validation Middleware
 
@@ -700,9 +702,9 @@ const validateObjectId = require('../middleware/validateObjectId');
 
 router.get('/:id', validateObjectId, (req, res) => {
     // ...
-});```
+});
+```
 
 
 
 **Thank you so much  for considering Vira! We are excited to see the amazing projects you will build with it.**
-````
